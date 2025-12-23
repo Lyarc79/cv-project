@@ -1,10 +1,14 @@
-import useState from "react";
+import { useState } from "react";
 
 function GeneralInfo() {
-  const [name, setName] = useState("");
+  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   return (
@@ -12,13 +16,35 @@ function GeneralInfo() {
       <legend>General Information</legend>
 
       <label htmlFor="name">
-        First Name:
+        Your Name:
         <input
           type="text"
           id="name"
           name="name"
-          value={name}
-          onChange={handleNameChange}
+          value={formData.name}
+          onChange={handleChange}
+        ></input>
+      </label>
+
+      <label htmlFor="email">
+        Email:
+        <input
+          type="text"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        ></input>
+      </label>
+
+      <label htmlFor="phone">
+        Phone:
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
         ></input>
       </label>
     </fieldset>
