@@ -1,3 +1,3 @@
 ## Live Demo
 
-[CV-App](https://cv-project-ivory.vercel.app/)
+<a href="https://cv-project-ivory.vercel.app/>" target="_blank">Live Demo</a>
