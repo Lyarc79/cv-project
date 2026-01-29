@@ -1,52 +1,64 @@
-import { useState } from "react";
+import SubmitButton from "./SubmitButton";
 
-function GeneralInfo() {
-  const [formData, setFormData] = useState({ name: "", email: "", phone: "" });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+function GeneralInfo({ data, onChange, isEditing, onToggle }) {
   return (
-    <fieldset>
+    <fieldset className="form-wrapper">
       <legend>General Information</legend>
 
-      <label htmlFor="name">
-        Your Name:
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-        ></input>
-      </label>
-
-      <label htmlFor="email">
-        Email:
-        <input
-          type="text"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        ></input>
-      </label>
-
-      <label htmlFor="phone">
-        Phone:
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-        ></input>
-      </label>
+      {isEditing ? (
+        <form onSubmit={onToggle} autoComplete="off">
+          <label htmlFor="name">
+            Your Name:
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={data.name}
+              onChange={onChange}
+              placeholder="John Doe"
+            ></input>
+          </label>
+          <label htmlFor="email">
+            Email:
+            <input
+              type="text"
+              id="email"
+              name="email"
+              value={data.email}
+              onChange={onChange}
+              placeholder="john.doe@example.com"
+            ></input>
+          </label>
+          <label htmlFor="phone">
+            Phone:
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              value={data.phone}
+              onChange={onChange}
+              placeholder="(123) 456-7890"
+            ></input>
+          </label>
+          <SubmitButton isEditing={isEditing}></SubmitButton>
+        </form>
+      ) : (
+        <div>
+          <p>
+            <strong>Name: </strong>
+            {data.name}
+          </p>
+          <p>
+            <strong>Email: </strong>
+            {data.email}
+          </p>
+          <p>
+            <strong>Phone: </strong>
+            {data.phone}
+          </p>
+          <SubmitButton isEditing={isEditing} onClick={onToggle}></SubmitButton>
+        </div>
+      )}
     </fieldset>
   );
 }

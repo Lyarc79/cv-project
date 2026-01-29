@@ -1,56 +1,90 @@
-import { useState } from "react";
+import SubmitButton from "./SubmitButton";
 
-function Education() {
-  const [formData, setFormData] = useState({
-    schoolName: "",
-    studyTitle: "",
-    studyDate: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
+function Education({ list, onUpdate, onToggle, onAdd, onDelete }) {
   return (
-    <fieldset>
+    <fieldset className="form-wrapper">
       <legend>Education</legend>
-
-      <label htmlFor="schoolName">
-        School Name:
-        <input
-          type="text"
-          id="schoolName"
-          name="schoolName"
-          value={formData.schoolName}
-          onChange={handleChange}
-        ></input>
-      </label>
-
-      <label htmlFor="studyTitle">
-        Study Titulation:
-        <input
-          type="text"
-          id="studyTitle"
-          name="studyTitle"
-          value={formData.studyTitle}
-          onChange={handleChange}
-        ></input>
-      </label>
-
-      <label htmlFor="studyDate">
-        Date of Study:
-        <input
-          type="date"
-          id="studyDate"
-          name="studyDate"
-          value={formData.studyDate}
-          onChange={handleChange}
-        ></input>
-      </label>
+      {list.map((item) => (
+        <div key={item.id} className="education-entry">
+          {item.isEditing ? (
+            <form onSubmit={(e) => onToggle(item.id, e)} autoComplete="off">
+              <label>
+                School:
+                <input
+                  name="schoolName"
+                  value={item.schoolName}
+                  onChange={(e) => onUpdate(item.id, e)}
+                  placeholder="e.g. University of Oxford"
+                ></input>
+              </label>
+              <label>
+                Degree:
+                <input
+                  name="studyTitle"
+                  value={item.studyTitle}
+                  onChange={(e) => onUpdate(item.id, e)}
+                  placeholder="e.g. Bachelor of Computer Science"
+                ></input>
+              </label>
+              <label>
+                From:
+                <input
+                  type="date"
+                  name="startDate"
+                  value={item.startDate}
+                  onChange={(e) => onUpdate(item.id, e)}
+                />
+              </label>
+              <label>
+                To:
+                <input
+                  type="date"
+                  name="endDate"
+                  value={item.endDate}
+                  onChange={(e) => onUpdate(item.id, e)}
+                />
+              </label>
+              <div className="form-buttons">
+                <SubmitButton isEditing={item.isEditing} />
+                <button type="button" onClick={() => onDelete(item.id)}>
+                  Remove
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="view-mode">
+              <p>
+                <strong>School: </strong>
+                {item.schoolName}
+              </p>
+              <p>
+                <strong>Degree: </strong>
+                {item.studyTitle}
+              </p>
+              <p>
+                <strong>Start Date: </strong>
+                {item.startDate}
+              </p>
+              <p>
+                <strong>End Date: </strong>
+                {item.endDate}
+              </p>
+              <div className="form-buttons">
+                <SubmitButton
+                  isEditing={item.isEditing}
+                  onClick={() => onToggle(item.id)}
+                />
+                <button type="button" onClick={() => onDelete(item.id)}>
+                  Remove
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+      <button type="button" onClick={onAdd}>
+        + Add Education
+      </button>
     </fieldset>
   );
 }
